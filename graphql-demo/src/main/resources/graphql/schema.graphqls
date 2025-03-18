@@ -18,5 +18,5 @@ type Query {
 }
 
 type Mutation{
-    saveBook(name: String, price: Int):Book
+    saveBook(name: String!, price: Int!,authorName: String!,authorGender: String!):Book
 }

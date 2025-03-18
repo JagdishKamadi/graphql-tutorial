@@ -1,34 +1,66 @@
 package com.graphql.graphql_demo.model;
 
-import java.util.Arrays;
-import java.util.List;
+import jakarta.persistence.*;
 
-public record Book(Integer id, String name, Integer price, Author author) {
+@Entity
+public class Book {
 
-    private static List<Book> books = Arrays.asList(
-            new Book(1, "Drilling in c", 100, new Author(1, "Jagdish Kamadi", "Male")),
-            new Book(2, "Java in 60 minutes", 250, new Author(2, "Vedu Shinde", "Female")),
-            new Book(3, "Rich Dad, Poor Dad", 200, new Author(3, "Madhur Bhoyar", "Alpha Male"))
-    );
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String name;
+    private Integer price;
+    @OneToOne
+    private Author author;
 
-    public static List<Book> getAllBook() {
-        return books;
+    public Book() {
     }
 
-    public static Book getBookById(Integer id) {
-        return books.stream().filter(book -> book.id().equals(id))
-                .findFirst().orElse(null);
+    public Book(String name, Integer price, Author author) {
+        this.name = name;
+        this.price = price;
+        this.author = author;
     }
 
-    public static Author getAuthorById(Integer id) {
-        return books.stream()
-                .map(Book::author)
-                .filter(author -> author.id().equals(id))
-                .findFirst().orElse(null);
+    public Integer getId() {
+        return id;
     }
 
-    public static Book saveBook(Book book) {
-        books.add(book);
-        return book;
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", author=" + author +
+                '}';
     }
 }
