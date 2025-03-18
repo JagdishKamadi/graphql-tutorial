@@ -11,7 +11,12 @@ public record Book(Integer id, String name, Integer price) {
             new Book(3, "Rich Dad, Poor Dad", 200)
     );
 
-    public static List<Book> getBooks() {
+    public static List<Book> getAllBook() {
         return books;
+    }
+
+    public static Book getBookById(Integer id) {
+        return books.stream().filter(book -> book.id().equals(id))
+                .findFirst().orElse(null);
     }
 }
