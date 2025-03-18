@@ -1,0 +1,9 @@
+type Query {
+    getAllBook: [Book]
+}
+
+type Book {
+    id: ID
+    name: String
+    price: Int
+}
