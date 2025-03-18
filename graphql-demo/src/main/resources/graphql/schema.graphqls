@@ -16,3 +16,7 @@ type Query {
     getBook(id: ID!): Book
     getAuthor(id: ID): Author
 }
+
+type Mutation{
+    saveBook(name: String, price: Int):Book
+}

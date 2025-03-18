@@ -26,4 +26,9 @@ public record Book(Integer id, String name, Integer price, Author author) {
                 .filter(author -> author.id().equals(id))
                 .findFirst().orElse(null);
     }
+
+    public static Book saveBook(Book book) {
+        books.add(book);
+        return book;
+    }
 }
