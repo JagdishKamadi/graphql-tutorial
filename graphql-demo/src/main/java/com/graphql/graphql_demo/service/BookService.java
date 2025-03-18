@@ -2,6 +2,7 @@ package com.graphql.graphql_demo.service;
 
 import com.graphql.graphql_demo.model.Book;
 import com.graphql.graphql_demo.reposiory.BookRepository;
+import exception.BookNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public class BookService {
     }
 
     public Book getBookById(Integer id) {
-        return bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found for this id " + id));
+        return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException("Book not found for this id " + id));
     }
 
     public Book saveBook(Book book) {
