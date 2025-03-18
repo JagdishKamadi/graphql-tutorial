@@ -1,5 +1,6 @@
 package com.graphql.graphql_demo.controller;
 
+import com.graphql.graphql_demo.model.Author;
 import com.graphql.graphql_demo.model.Book;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -28,5 +29,12 @@ public class BookController {
         Book book = Book.getBookById(id);
         LOGGER.info("Getting  book {}", book);
         return book;
+    }
+
+    @QueryMapping
+    public Author getAuthor(@Argument Integer id) {
+        Author author = Book.getAuthorById(id);
+        LOGGER.info("Getting  author {}", author);
+        return author;
     }
 }

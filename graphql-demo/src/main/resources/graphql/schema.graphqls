@@ -1,8 +1,3 @@
-type Query {
-    getBooks: [Book]
-    getBook(id: ID!): Book
-}
-
 type Book {
     id: ID
     name: String
@@ -14,4 +9,10 @@ type Author{
     id: ID! # ! indicates it should not be null
     name: String!
     gender: String!
+}
+
+type Query {
+    getBooks: [Book]
+    getBook(id: ID!): Book
+    getAuthor(id: ID): Author
 }

@@ -19,4 +19,11 @@ public record Book(Integer id, String name, Integer price, Author author) {
         return books.stream().filter(book -> book.id().equals(id))
                 .findFirst().orElse(null);
     }
+
+    public static Author getAuthorById(Integer id) {
+        return books.stream()
+                .map(Book::author)
+                .filter(author -> author.id().equals(id))
+                .findFirst().orElse(null);
+    }
 }
