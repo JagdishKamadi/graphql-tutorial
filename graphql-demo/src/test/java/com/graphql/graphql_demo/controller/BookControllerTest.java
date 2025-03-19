@@ -4,6 +4,7 @@ import com.graphql.graphql_demo.model.Author;
 import com.graphql.graphql_demo.model.Book;
 import com.graphql.graphql_demo.service.AuthorService;
 import com.graphql.graphql_demo.service.BookService;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,16 @@ class BookControllerTest {
     @MockitoBean
     private AuthorService authorService;
 
+    private static Book book;
+
+    private static Author author;
+
+    @BeforeAll
+    static void setUpObject() {
+        author = new Author("Virat Kohli", "Male");
+        book = new Book("King of Chase", 999, author);
+    }
+
     @Test
     void testGetBook_BookFound() {
         String query = """
@@ -43,9 +54,6 @@ class BookControllerTest {
                    }
                  }
                 """;
-
-        Author author = new Author("Virat Kohli", "Male");
-        Book book = new Book("King of Chase", 999, author);
 
         when(bookService.getBookById(1)).thenReturn(book);
         graphQlTester.document(query)
