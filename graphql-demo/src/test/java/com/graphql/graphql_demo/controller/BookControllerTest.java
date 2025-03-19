@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.graphql.GraphQlTest;
 import org.springframework.graphql.test.tester.GraphQlTester;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,20 +32,18 @@ class BookControllerTest {
     private AuthorService authorService;
 
     private static Book book;
-
     private static Author author;
+    private static String query;
 
     @BeforeAll
     static void setUpObject() {
         author = new Author("Virat Kohli", "Male");
         book = new Book("King of Chase", 999, author);
-    }
 
-    @Test
-    void testGetBook_BookFound() {
-        String query = """
+        query = """
+                query getBook($id: ID!)
                 {
-                   getBook(id: 1) {
+                   getBook(id: $id) {
                      name
                      price
                      author {
@@ -54,24 +53,25 @@ class BookControllerTest {
                    }
                  }
                 """;
-
-        when(bookService.getBookById(1)).thenReturn(book);
-        graphQlTester.document(query)
-                .execute()
-                .path("data.getBook.name")
-                .entity(String.class)
-                .isEqualTo("King of Chase")
-                .path("data.getBook.price")
-                .entity(Integer.class)
-                .isEqualTo(999)
-                .path("data.getBook.author.name")
-                .entity(String.class)
-                .isEqualTo("Virat Kohli")
-                .path("data.getBook.author.gender")
-                .entity(String.class)
-                .isEqualTo("Male");
-
-        verify(bookService).getBookById(1);
     }
 
+    @Test
+    void testGetBook_BookFound() {
+        int id = 1;
+        when(bookService.getBookById(id)).thenReturn(book);
+
+        graphQlTester.document(query)
+                .variable("id", id)
+                .execute()
+                .path("getBook")
+                .entity(Book.class)
+                .satisfies((b) -> {
+                    assertEquals("King of Chase", b.getName());
+                    assertEquals(999, b.getPrice());
+                    assertEquals("Virat Kohli", b.getAuthor().getName());
+                    assertEquals("Male", b.getAuthor().getGender());
+                });
+
+        verify(bookService).getBookById(id);
+    }
 }
